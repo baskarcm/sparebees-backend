@@ -8,7 +8,7 @@ class LanguageController extends Controller
 {
 
     public function adminLnagugae(){
-        $data = include('lang/en/admin.php');
+        $data = include(base_path().'/lang/en/admin.php');
 
         return view('admin.admin_language', compact('data'));
 
