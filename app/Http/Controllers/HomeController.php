@@ -68,7 +68,7 @@ use App\Models\Footer;
 class HomeController extends Controller
 {
     public function websiteSetup(){
-        $language = include('lang/en/user.php');
+        $language = include(base_path().'/lang/en/user.php');
         $setting = Setting::select('logo','favicon','enable_user_register','enable_multivendor','text_direction','timezone','topbar_phone','topbar_email','currency_icon','currency_name','show_product_progressbar','theme_one','theme_two','seller_condition')->first();
         $announcementModal = AnnouncementModal::first();
         $productCategories = Category::with('activeSubCategories.activeChildCategories')->where(['status' => 1])->select('id','name','slug','icon')->get();
