@@ -51,7 +51,7 @@ class LanguageController extends Controller
 
     public function websiteLanguage(){
 
-        $data = include('lang/en/user.php');
+        $data = include(base_path().'/lang/en/user.php');
 
         return view('admin.language', compact('data'));
     }
