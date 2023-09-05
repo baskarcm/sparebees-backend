@@ -73,7 +73,7 @@ class LanguageController extends Controller
 
 
     public function websiteValidationLanguage(){
-        $data = include('lang/en/user_validation.php');
+        $data = include(base_path().'/lang/en/user_validation.php');
 
         return view('admin.website_validation_language', compact('data'));
     }
