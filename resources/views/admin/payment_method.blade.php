@@ -24,9 +24,9 @@
                                     <ul class="nav nav-pills flex-column" id="myTab4" role="tablist">
 
 
-                                        <li class="nav-item border rounded mb-1">
+                                        {{-- <li class="nav-item border rounded mb-1">
                                             <a class="nav-link active" id="paypal-tab" data-toggle="tab" href="#paypalTab" role="tab" aria-controls="paypalTab" aria-selected="true">{{__('admin.Paypal')}}</a>
-                                        </li>
+                                        </li> --}}
 
                                         <li class="nav-item border rounded mb-1">
                                             <a class="nav-link" id="stripe-tab" data-toggle="tab" href="#stripeTab" role="tab" aria-controls="stripeTab" aria-selected="true">{{__('admin.Stripe')}}</a>
@@ -36,7 +36,7 @@
                                             <a class="nav-link" id="razorpay-tab" data-toggle="tab" href="#razorpayTab" role="tab" aria-controls="razorpayTab" aria-selected="true">{{__('admin.Razorpay')}}</a>
                                         </li>
 
-                                        <li class="nav-item border rounded mb-1">
+                                        {{-- <li class="nav-item border rounded mb-1">
                                             <a class="nav-link" id="flutterwave-tab" data-toggle="tab" href="#flutterwaveTab" role="tab" aria-controls="flutterwaveTab" aria-selected="true">{{__('admin.Flutterwave')}}</a>
                                         </li>
 
@@ -56,7 +56,7 @@
 
                                         <li class="nav-item border rounded mb-1">
                                             <a class="nav-link" id="sslcommerz-tab" data-toggle="tab" href="#sslcommerzTab" role="tab" aria-controls="sslcommerzTab" aria-selected="true">{{__('admin.SslCommerz')}}</a>
-                                        </li>
+                                        </li> --}}
 
                                         <li class="nav-item border rounded mb-1">
                                             <a class="nav-link" id="bank-account-tab" data-toggle="tab" href="#bankAccountTab" role="tab" aria-controls="bankAccountTab" aria-selected="true">{{__('admin.Bank Account')}}</a>

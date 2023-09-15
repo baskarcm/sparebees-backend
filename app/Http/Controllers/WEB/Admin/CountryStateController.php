@@ -25,7 +25,7 @@ class CountryStateController extends Controller
 
     public function index()
     {
-        $states = CountryState::with('cities','country','addressStates')->get();
+        $states = CountryState::with('cities','country','addressStates')->where('country_id',101)->get();
         return view('admin.state', compact('states'));
     }
 

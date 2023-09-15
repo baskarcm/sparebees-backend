@@ -26,7 +26,7 @@ class CityController extends Controller
 
     public function index()
     {
-        $cities = City::with('countryState','addressCities')->get();
+        $cities = City::with('countryState','addressCities')->where('country_state_id','<=',41)->get();
 
         return view('admin.city', compact('cities'));
     }
@@ -161,6 +161,7 @@ class CityController extends Controller
     {
 
         try{
+            ini_set('max_execution_time', 0);
             Excel::import(new CityImport, $request->file('import_file'));
 
             $notification=trans('Uploaded Successfully');

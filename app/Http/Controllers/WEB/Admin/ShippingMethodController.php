@@ -23,7 +23,7 @@ class ShippingMethodController extends Controller
     public function index(){
         $shippings = Shipping::with('city')->orderBy('id','asc')->get();
         $setting = Setting::first();
-        $cities = City::where('status',1)->orderBy('name','asc')->get();
+        $cities = City::where('status',1)->where('country_state_id','<=',41)->orderBy('name','asc')->get();
         return view('admin.shipping_method', compact('shippings','setting','cities'));
     }
 
