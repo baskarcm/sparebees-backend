@@ -1149,6 +1149,7 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
 
 
     Route::get('all-order', [OrderController::class, 'index'])->name('all-order');
+    Route::get('all-order/list', [OrderController::class, 'allorderslist'])->name('all-order.list');
 
     Route::get('pending-order', [OrderController::class, 'pendingOrder'])->name('pending-order');
 

@@ -11,7 +11,8 @@
   @yield('title')
   <title>{{__('admin.Login')}}</title>
 
-
+  <!-- CSRF Token -->
+  <meta name="_token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
   <link href="{{ asset('backend/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('backend/fontawesome/css/all.min.css') }}">
@@ -34,6 +35,8 @@
   <link rel="stylesheet" href="{{ asset('backend/clockpicker/dist/bootstrap-clockpicker.css') }}">
   <link rel="stylesheet" href="{{ asset('backend/datetimepicker/jquery.datetimepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('backend/css/iziToast.min.css') }}">
+
+  <link href="{{ asset('backend/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" />
 
   <script src="{{ asset('backend/js/jquery-3.6.0.min.js') }}"></script>
 <style>

@@ -27,6 +27,12 @@ class OrderController extends Controller
 
     }
 
+    public function allorderslist()
+    {
+        $orders = Order::with('user')->orderBy('id','desc')->get();
+        return datatables()->of($orders)->make(true);
+    }
+
     public function pendingOrder(){
         $orders = Order::with('user')->orderBy('id','desc')->where('order_status',0)->get();
         $title = trans('admin_validation.Pending Orders');

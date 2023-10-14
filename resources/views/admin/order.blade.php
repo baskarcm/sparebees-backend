@@ -20,10 +20,10 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="table-responsive table-invoice">
-                        <table class="table table-striped" id="dataTable">
+                        <table class="table table-striped" id="dataTable1">
                             <thead>
                                 <tr>
-                                    <th width="5%">{{__('admin.SN')}}</th>
+                                    {{-- <th width="5%">{{__('admin.SN')}}</th> --}}
                                     <th width="10%">{{__('admin.Customer')}}</th>
                                     <th width="10%">{{__('admin.Order Id')}}</th>
                                     <th width="10%">{{__('admin.Date')}}</th>
@@ -35,45 +35,7 @@
                                   </tr>
                             </thead>
                             <tbody>
-                                @foreach ($orders as $index => $order)
-                                    <tr>
-                                        <td>{{ ++$index }}</td>
-                                        <td>{{ $order->user->name }}</td>
-                                        <td>{{ $order->order_id }}</td>
-                                        <td>{{ $order->created_at->format('d F, Y') }}</td>
-                                        <td>{{ $order->product_qty }}</td>
-                                        <td>{{ $setting->currency_icon }}{{ round($order->total_amount) }}</td>
-                                        <td>
-                                            @if ($order->order_status == 1)
-                                            <span class="badge badge-success">{{__('admin.Pregress')}} </span>
-                                            @elseif ($order->order_status == 2)
-                                            <span class="badge badge-success">{{__('admin.Delivered')}} </span>
-                                            @elseif ($order->order_status == 3)
-                                            <span class="badge badge-success">{{__('admin.Completed')}} </span>
-                                            @elseif ($order->order_status == 4)
-                                            <span class="badge badge-danger">{{__('admin.Declined')}} </span>
-                                            @else
-                                            <span class="badge badge-danger">{{__('admin.Pending')}}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($order->payment_status == 1)
-                                            <span class="badge badge-success">{{__('admin.success')}} </span>
-                                            @else
-                                            <span class="badge badge-danger">{{__('admin.Pending')}}</span>
-                                            @endif
-                                        </td>
 
-                                        <td>
-
-                                        <a href="{{ route('admin.order-show',$order->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></a>
-
-                                        <a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData({{ $order->id }})"><i class="fa fa-trash" aria-hidden="true"></i></a>
-
-                                        <a href="javascript:;" data-toggle="modal" data-target="#orderModalId-{{ $order->id }}" class="btn btn-warning btn-sm"><i class="fas fa-truck" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                  @endforeach
                             </tbody>
                         </table>
                       </div>
@@ -83,6 +45,7 @@
           </div>
         </section>
       </div>
+
 
 
       <!-- Modal -->
@@ -133,9 +96,99 @@
 
       @endforeach
 
+
+      <link href="{{ asset('backend/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" />
+      <script src="{{ asset('backend/dataTables/jquery.dataTables.js') }}"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+  <script src="{{ asset('backend/dataTables/dataTables.bootstrap4.js') }}"></script>
+
 <script>
+
     function deleteData(id){
         $("#deleteForm").attr("action",'{{ url("admin/delete-order/") }}'+"/"+id)
     }
+
+    var table = $('#dataTable1').DataTable({
+            // 'ordering': true,
+            "processing": true,
+            "serverSide": true,
+
+            "ajax": {
+                "url": "{{route('admin.all-order.list')}}",
+                "type":"get",
+                data: function (d)
+                {
+
+                },
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            },
+            "columns": [
+            //     {
+            //     "name":"sno",
+            //     "data":"sno"
+            // },
+            {
+                "name":"user.name",
+                "data":"user.name"
+            },
+            {
+                "name":"order_id",
+                "data":"order_id"
+            },
+                       {
+                "name":"created_at",
+                "data":"created_at"
+            },{
+                "name":"product_qty",
+                "data":"product_qty"
+            },
+            {
+                "name":"total_amount",
+                "data":"total_amount"
+            },
+
+           {
+               "mRender":function(data,type,row)
+               {
+                    if (row.order_status == 1)
+                    return ` <span class="badge badge-success">{{__('admin.Pregress')}} </span>`
+                    else if (row.order_status == 2)
+                    return `<span class="badge badge-success">{{__('admin.Delivered')}} </span>`
+                    else if (row.order_status == 3)
+                     return `<span class="badge badge-success">{{__('admin.Completed')}} </span>`
+                    else if (row.order_status == 4)
+                    return `<span class="badge badge-danger">{{__('admin.Declined')}} </span>`
+                    else
+                    return `<span class="badge badge-danger">{{__('admin.Pending')}}</span>`
+
+               }
+            },
+
+           {
+               "mRender":function(data,type,row)
+               {
+                    if(row.payment_status == 1)
+                    return `<span class="badge badge-success">{{__('admin.success')}} </span>`
+                    else
+                    return `<span class="badge badge-danger">{{__('admin.Pending')}}</span>`
+               }
+            },
+            {
+                "mRender": function (data, type, row) {
+
+                    return  ` <a href="/admin/order-show/${row.id}" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></a>
+
+<a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData(${row.id})"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+<a href="javascript:;" data-toggle="modal" data-target="#orderModalId-${row.id}" class="btn btn-warning btn-sm"><i class="fas fa-truck" aria-hidden="true"></i></a>`;
+
+                }
+            }
+        ]
+        });
 </script>
 @endsection
