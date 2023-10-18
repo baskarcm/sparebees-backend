@@ -28,12 +28,12 @@
                                             <a class="nav-link active" id="paypal-tab" data-toggle="tab" href="#paypalTab" role="tab" aria-controls="paypalTab" aria-selected="true">{{__('admin.Paypal')}}</a>
                                         </li> --}}
 
-                                        <li class="nav-item border rounded mb-1">
+                                        {{-- <li class="nav-item border rounded mb-1">
                                             <a class="nav-link" id="stripe-tab" data-toggle="tab" href="#stripeTab" role="tab" aria-controls="stripeTab" aria-selected="true">{{__('admin.Stripe')}}</a>
-                                        </li>
+                                        </li> --}}
 
                                         <li class="nav-item border rounded mb-1">
-                                            <a class="nav-link" id="razorpay-tab" data-toggle="tab" href="#razorpayTab" role="tab" aria-controls="razorpayTab" aria-selected="true">{{__('admin.Razorpay')}}</a>
+                                            <a class="nav-link active" id="razorpay-tab" data-toggle="tab" href="#razorpayTab" role="tab" aria-controls="razorpayTab" aria-selected="true">{{__('admin.Razorpay')}}</a>
                                         </li>
 
                                         {{-- <li class="nav-item border rounded mb-1">
@@ -58,9 +58,9 @@
                                             <a class="nav-link" id="sslcommerz-tab" data-toggle="tab" href="#sslcommerzTab" role="tab" aria-controls="sslcommerzTab" aria-selected="true">{{__('admin.SslCommerz')}}</a>
                                         </li> --}}
 
-                                        <li class="nav-item border rounded mb-1">
+                                        {{-- <li class="nav-item border rounded mb-1">
                                             <a class="nav-link" id="bank-account-tab" data-toggle="tab" href="#bankAccountTab" role="tab" aria-controls="bankAccountTab" aria-selected="true">{{__('admin.Bank Account')}}</a>
-                                        </li>
+                                        </li> --}}
                                         @if ($bank)
                                             <li class="nav-item border rounded mb-1">
                                                 <a class="nav-link" id="cash-tab" data-toggle="tab" href="#cashTab" role="tab" aria-controls="cashTab" aria-selected="true">{{__('admin.Cash On Deliver')}}</a>
@@ -74,7 +74,7 @@
                                     <div class="border rounded">
                                         <div class="tab-content no-padding" id="settingsContent">
 
-                                            <div class="tab-pane fade show active" id="paypalTab" role="tabpanel" aria-labelledby="paypal-tab">
+                                            <div class="tab-pane fade" id="paypalTab" role="tabpanel" aria-labelledby="paypal-tab">
                                                 <div class="card m-0">
                                                     <div class="card-body">
                                                         <form action="{{ route('admin.update-paypal') }}" method="POST">
@@ -206,7 +206,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="tab-pane fade" id="razorpayTab" role="tabpanel" aria-labelledby="razorpay-tab">
+                                            <div class="tab-pane fade show active" id="razorpayTab" role="tabpanel" aria-labelledby="razorpay-tab">
                                                 <div class="card m-0">
                                                     <div class="card-body">
                                                         <form action="{{ route('admin.update-razorpay') }}" method="POST" enctype="multipart/form-data">
