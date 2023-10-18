@@ -40,7 +40,7 @@
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>
-                                            <img src="{{ asset($category->image) }}" alt="" class="category_image">
+                                            <img src="{{ file_exists(asset($category->image))?asset($category->image):asset('uploads/custom-images/no-image.png') }}" alt="" class="category_image">
                                         </td>
                                         <td> <i class="{{ $category->icon }}"></i></td>
                                         <td>
