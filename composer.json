@@ -21,6 +21,7 @@
         "razorpay/razorpay": "^2.8",
         "stripe/stripe-php": "^10.2",
         "tymon/jwt-auth": "^1.0",
+        "yajra/laravel-datatables-buttons": "^9.1",
         "yajra/laravel-datatables-oracle": "^10.3.1"
     },
     "require-dev": {
