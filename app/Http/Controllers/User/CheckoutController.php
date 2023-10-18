@@ -106,21 +106,21 @@ class CheckoutController extends Controller
 
             'couponOffer' => $couponOffer,
 
-            'stripePaymentInfo' => $stripePaymentInfo,
+            // 'stripePaymentInfo' => $stripePaymentInfo,
 
             'razorpayPaymentInfo' => $razorpayPaymentInfo,
 
-            'flutterwavePaymentInfo' => $flutterwavePaymentInfo,
+            // 'flutterwavePaymentInfo' => $flutterwavePaymentInfo,
 
-            'paypalPaymentInfo' => $paypalPaymentInfo,
+            // 'paypalPaymentInfo' => $paypalPaymentInfo,
 
             'bankPaymentInfo' => $bankPaymentInfo,
 
-            'paystackAndMollie' => $paystackAndMollie,
+            // 'paystackAndMollie' => $paystackAndMollie,
 
-            'instamojo' => $instamojo,
+            // 'instamojo' => $instamojo,
 
-            'sslcommerz' => $sslcommerz,
+            // 'sslcommerz' => $sslcommerz,
 
         ],200);
 
