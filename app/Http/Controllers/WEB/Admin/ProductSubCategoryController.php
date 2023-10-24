@@ -128,4 +128,10 @@ class ProductSubCategoryController extends Controller
         return response()->json($message);
     }
 
+    public function allsubcategorylist()
+    {
+        $subCategories=SubCategory::with('category','childCategories','products')->get();
+        return datatables()->of($subCategories)->make(true);
+    }
+
 }

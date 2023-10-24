@@ -123,4 +123,8 @@ class MegaMenuController extends Controller
         return response()->json($message);
     }
 
+    public function megamunecategorylist(){
+        $categories = MegaMenuCategory::with('category')->orderBy('serial','asc')->get();
+        return datatables()->of($categories)->make(true);
+    }
 }

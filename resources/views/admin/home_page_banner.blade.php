@@ -26,7 +26,7 @@
                             <div class="card-header">
                             <div class="card-body">
                                 <div class="table-responsive table-invoice">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped" id="dataTable1">
                                         <thead>
                                             <tr>
                                                 <th>{{__('admin.Name')}}</th>
@@ -34,15 +34,6 @@
                                               </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($popularCategories as $index => $popularCategory)
-                                                <tr>
-                                                    <td>{{ $popularCategory->category->name }}</td>
-                                                    <td>
-                                                        <a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData({{ $popularCategory->id }})"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                                    </td>
-
-                                                </tr>
-                                              @endforeach
                                         </tbody>
                                     </table>
                                   </div>
@@ -90,10 +81,44 @@
         </div>
       </div>
 
+    <link href="{{ asset('backend/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" />
+    <script src="{{ asset('backend/dataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('backend/dataTables/dataTables.bootstrap4.js') }}"></script>
+
 <script>
     function deleteData(id){
         $("#deleteForm").attr("action",'{{ url("admin/destroy-popular-category/") }}'+"/"+id)
     }
+    var table = $('#dataTable1').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{route('admin.all-popular-category.list')}}",
+                "type":"get",
+                data: function (d)
+                {
+
+                },
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            },
+            "columns": [
+            {
+                "name":"category.name",
+                "data":"category.name"
+            },
+            {
+               "mRender":function(data,type,row)
+               {
+                    return `<a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData(${row.id})"><i class="fa fa-trash" aria-hidden="true"></i></a>`
+               }
+            }
+        ]
+        });
 </script>
 
 @endsection

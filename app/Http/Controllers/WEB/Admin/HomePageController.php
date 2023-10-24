@@ -60,6 +60,10 @@ class HomePageController extends Controller
 
     }
 
+    public function popularcategorylist(){
+        $popularCategories = PopularCategory::with('category')->get();
+        return datatables()->of($popularCategories)->make(true);
+    }
 
     public function bannerPopularCategory(Request $request){
         $setting = Setting::first();
@@ -130,6 +134,12 @@ class HomePageController extends Controller
         $banner = Setting::select('featured_category_banner')->first();
 
         return view('admin.featured_category', compact('featuredCategories', 'categories','banner'));
+
+    }
+
+    public function featuredcategorylist(){
+        $featuredCategories = FeaturedCategory::with('category')->get();  
+        return datatables()->of($featuredCategories)->make(true);
 
     }
 

@@ -151,4 +151,10 @@ class ProductChildCategoryController extends Controller
         }
         return response()->json($message);
     }
+
+    public function allchildcategorylist()
+    {
+        $childCategories=ChildCategory::with('subCategory','category','products')->get();
+        return datatables()->of($childCategories)->make(true);
+    }
 }

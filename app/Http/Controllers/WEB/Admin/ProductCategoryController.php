@@ -161,4 +161,10 @@ class ProductCategoryController extends Controller
         }
         return response()->json($message);
     }
+    
+    public function allcategorylist()
+    {
+        $category = Category::with('subCategories','products')->orderBy('id','desc')->get();
+        return datatables()->of($category)->make(true);
+    }
 }

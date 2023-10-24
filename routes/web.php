@@ -1150,6 +1150,12 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
 
     Route::get('all-order', [OrderController::class, 'index'])->name('all-order');
     Route::get('all-order/list', [OrderController::class, 'allorderslist'])->name('all-order.list');
+    Route::get('all-category/list', [ProductCategoryController::class, 'allcategorylist'])->name('all-category.list');
+    Route::get('all-sub-category/list', [ProductSubCategoryController::class, 'allsubcategorylist'])->name('all-sub-category.list');
+    Route::get('all-child-category/list', [ProductChildCategoryController::class, 'allchildcategorylist'])->name('all-child-category.list');
+    Route::get('mega-menu-category/list', [MegaMenuController::class, 'megamunecategorylist'])->name('mega-menu-category.list');
+    Route::get('popular-category/list', [HomePageController::class, 'popularcategorylist'])->name('all-popular-category.list');
+    Route::get('featured-category/list', [HomePageController::class, 'featuredcategorylist'])->name('all-featured-category.list');
 
     Route::get('pending-order', [OrderController::class, 'pendingOrder'])->name('pending-order');
 

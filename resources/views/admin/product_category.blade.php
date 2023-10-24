@@ -24,7 +24,6 @@
                         <table class="table table-striped" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>{{__('admin.SN')}}</th>
                                     <th>{{__('admin.Id')}}</th>
                                     <th>{{__('admin.Name')}}</th>
                                     <th>{{__('admin.Image')}}</th>
@@ -34,44 +33,6 @@
                                   </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $index => $category)
-                                    <tr>
-                                        <td>{{ ++$index }}</td>
-                                        <td>{{ $category->id }}</td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>
-                                            <img src="{{ file_exists(asset($category->image))?asset($category->image):asset('uploads/custom-images/no-image.png') }}" alt="" class="category_image">
-                                        </td>
-                                        <td> <i class="{{ $category->icon }}"></i></td>
-                                        <td>
-                                            @if($category->status == 1)
-                                            <a href="javascript:;" onclick="changeProductCategoryStatus({{ $category->id }})">
-                                                <input id="status_toggle" type="checkbox" checked data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.Inactive')}}" data-onstyle="success" data-offstyle="danger">
-                                            </a>
-
-                                            @else
-                                            <a href="javascript:;" onclick="changeProductCategoryStatus({{ $category->id }})">
-                                                <input id="status_toggle" type="checkbox" data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.Inactive')}}" data-onstyle="success" data-offstyle="danger">
-                                            </a>
-
-                                            @endif
-                                        </td>
-                                        <td>
-                                        <a href="{{ route('admin.product-category.edit',$category->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></a>
-
-                                        @php
-                                            $isPopular = App\Models\PopularCategory::where('category_id', $category->id)->count();
-                                            $isFeatured = App\Models\FeaturedCategory::where('category_id', $category->id)->count();
-                                        @endphp
-                                        @if ($category->subCategories->count() == 0 && $category->products->count() == 0 && $isPopular == 0 && $isFeatured == 0)
-                                            <a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData({{ $category->id }})"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                        @else
-                                            <a href="javascript:;" data-toggle="modal" data-target="#canNotDeleteModal" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                        @endif
-                                    </td>
-
-                                    </tr>
-                                  @endforeach
                             </tbody>
                         </table>
                       </div>
@@ -121,4 +82,72 @@
         })
     }
 </script>
+<link href="{{ asset('backend/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" />
+<script src="{{ asset('backend/dataTables/jquery.dataTables.js') }}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="{{ asset('backend/dataTables/dataTables.bootstrap4.js') }}"></script>
+
+<script>
+     var table = $('#dataTable').DataTable({
+            // 'ordering': true,
+            "processing": true,
+            "serverSide": true,
+            "pageLength": 20,
+            "ajax": {
+                "url": "{{route('admin.all-category.list')}}",
+                "type":"get",
+                data: function (d)
+                {
+
+                },
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            },
+            "columns": [
+            {
+                "name":"id",
+                "data":"id"
+            },
+            {
+                "name":"name",
+                "data":"name"
+            },
+            {
+              "mRender": function (data, type, row) 
+              {
+                  return `<img src="{{(asset('/'))}}${row.image}" alt="" class="category_image">`;
+              }
+            },
+            {
+              "mRender": function (data, type, row) 
+              {
+                  return `<i class="${row.icon}"></i>`;
+              }
+            },
+            {
+              "mRender": function (data, type, row) 
+              {
+                if(row.status === 1)
+                  return `<a href="javascript:;" onclick="changeProductCategoryStatus(${row.id})"> <input id="status_toggle" type="checkbox" checked data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.Inactive')}}" data-onstyle="success" data-offstyle="danger"> </a>`
+                else
+                  return `<a href="javascript:;" onclick="changeProductCategoryStatus(${row.id})"> <input id="status_toggle" type="checkbox" data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.Inactive')}}" data-onstyle="success" data-offstyle="danger"> </a>`
+              }
+            },
+            {
+              "mRender": function (data, type, row) 
+              {
+                if(row.sub_categories.length === 0 && row.products.length === 0)
+                  return `<a href="/admin/product-category/${row.id}/edit" class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></a>  <a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData(${row.id})"><i class="fa fa-trash" aria-hidden="true"></i></a>`;
+                else
+                  return `<a href="/admin/product-category/${row.id}/edit" class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></a>  <a href="javascript:;" data-toggle="modal" data-target="#canNotDeleteModal" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i></a>`;
+              }
+            }
+          
+        ]
+        });
+</script>
+
 @endsection
