@@ -21,7 +21,7 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="table-responsive table-invoice">
-                        <table class="table table-striped" id="dataTable">
+                        {{-- <table class="table table-striped" id="dataTable">
                             <thead>
                                 <tr>
                                     <th width="5%">{{__('admin.SN')}}</th>
@@ -101,8 +101,9 @@
                                         </td>
                                     </tr>
                                   @endforeach
-                            </tbody>
-                        </table>
+                                  </tbody>
+                                  </table> --}}
+                                  {{ $dataTable->table() }}
                       </div>
                     </div>
                   </div>
@@ -125,11 +126,21 @@
               </div>
           </div>
       </div>
+      <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="/vendor/datatables/buttons.server-side.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+{{ $dataTable->scripts() }}
 <script>
     function deleteData(id){
         $("#deleteForm").attr("action",'{{ url("admin/product/") }}'+"/"+id)
     }
     function changeProductStatus(id){
+        console.log('b');
         var isDemo = "{{ env('APP_VERSION') }}"
         if(isDemo == 0){
             toastr.error('This Is Demo Version. You Can Not Change Anything');
@@ -141,6 +152,7 @@
             url:"{{url('/admin/product-status/')}}"+"/"+id,
             success:function(response){
                 toastr.success(response)
+                window.LaravelDataTables["product-table"].draw();
             },
             error:function(err){
                 console.log(err);

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\WEB\Admin;
+
+use App\DataTables\ProductDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -28,10 +30,11 @@ use File;
 use Str;
 
 use App\Exports\ProductExport;
+use App\Exports\ProductCustomExport;
 use App\Imports\ProductImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Exception;
-
+use Storage;
 class ProductController extends Controller
 {
     public function __construct()
@@ -39,14 +42,18 @@ class ProductController extends Controller
         $this->middleware('auth:admin');
     }
 
-    public function index()
+    public function index(ProductDataTable $dataTable)
     {
-        $products = Product::with('category','seller','brand')->where(['vendor_id' => 0])->orderBy('id','desc')->get();
+        $products = Product::with('category','seller','brand')->where(['vendor_id' => 0])->orderBy('id','desc')->limit(10)->get();
         $orderProducts = OrderProduct::all();
         $setting = Setting::first();
         $frontend_url = $setting->frontend_url;
         $frontend_view = $frontend_url.'single-product?slug=';
-
+        $this->data['products'] = $products;
+        $this->data['orderProducts'] = $orderProducts;
+        $this->data['setting'] = $setting;
+        $this->data['frontend_view'] = $frontend_view;
+        return $dataTable->render('admin.product',$this->data);
         return view('admin.product',compact('products','orderProducts','setting','frontend_view'));
     }
 
@@ -128,7 +135,7 @@ class ProductController extends Controller
         if($request->thumb_image){
             $extention = $request->thumb_image->getClientOriginalExtension();
             $image_name = Str::slug($request->name).date('-Y-m-d-h-i-s-').rand(999,9999).'.'.$extention;
-            $image_name = 'uploads/custom-images/'.$image_name;
+            $image_name = 'uploads/product_img/'.$image_name;
             Image::make($request->thumb_image)
                 ->save(public_path().'/'.$image_name);
             $product->thumb_image=$image_name;
@@ -251,7 +258,7 @@ class ProductController extends Controller
             $old_thumbnail = $product->thumb_image;
             $extention = $request->thumb_image->getClientOriginalExtension();
             $image_name = Str::slug($request->name).date('-Y-m-d-h-i-s-').rand(999,9999).'.'.$extention;
-            $image_name = 'uploads/custom-images/'.$image_name;
+            $image_name = 'uploads/product_img/'.$image_name;
             Image::make($request->thumb_image)
                 ->save(public_path().'/'.$image_name);
             $product->thumb_image=$image_name;
@@ -401,6 +408,20 @@ class ProductController extends Controller
 
         return Excel::download(new ProductExport($is_dummy), 'products.xlsx');
     }
+    /*public function product_export(){
+ini_set('max_execution_time', 0);
+        $is_dummy = false;
+//         foreach(Product::all() as $v){
+//             if($v->pro_image!=''){
+//                 if(File::exists(public_path().'/uploads/'.$v->pro_image)){
+//                     // dd(explode('/', $v->pro_image)[2]);
+//                     File::copy(public_path().'/uploads/'.$v->pro_image, public_path().'/uploads/new_product/'.explode('/', $v->pro_image)[2]);
+//                 }
+//             }
+//         }
+// dd('done');
+        return Excel::download(new ProductCustomExport($is_dummy), 'products.xlsx');
+    }*/
 
     public function product_demo_export(){
 
@@ -413,6 +434,7 @@ class ProductController extends Controller
     public function store_product_import(Request $request)
     {
         try{
+            ini_set('max_execution_time', 0);
             Excel::import(new ProductImport, $request->file('import_file'));
 
             $notification=trans('Uploaded Successfully');
@@ -420,7 +442,8 @@ class ProductController extends Controller
             return redirect()->back()->with($notification);
 
         }catch(Exception $ex){
-            $notification=trans('Please follow the instruction and input the value carefully');
+            // dd($ex->getMessage());
+            $notification=trans($ex->getMessage());
             $notification=array('messege'=>$notification,'alert-type'=>'error');
             return redirect()->back()->with($notification);
         }
